@@ -68,6 +68,10 @@ function sendMessage() {
 
     axios.post('/api/chat', {messages})
         .then(resp => {
+            if (resp.data.error) {
+                addMessage('assistant', resp.data.error);
+                return;
+            }
             const reply = resp.data.reply;
             addMessage('assistant', reply);
             messages.push({role: 'assistant', content: reply});
@@ -86,7 +90,10 @@ function sendMessage() {
         })
         .catch(err => {
             console.error(err);
-            addMessage('assistant', 'There was an error contacting the AI service.');
+            const msg = err.response && err.response.data && err.response.data.error
+                ? err.response.data.error
+                : 'There was an error contacting the AI service.';
+            addMessage('assistant', msg);
         });
 }
 

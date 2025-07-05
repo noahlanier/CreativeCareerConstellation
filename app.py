@@ -50,11 +50,10 @@ def chat():
                 max_tokens=200,
             )
             reply_content = response.choices[0].message["content"]
+            return jsonify({"reply": reply_content})
         except Exception as e:
-            reply_content = json.dumps({
-                "error": f"Error contacting OpenAI: {e}",
-                "question": "Could you try again?"
-            })
+            return jsonify({"error": f"Error contacting OpenAI: {e}"}), 502
+
     elif HF_API_TOKEN:
         prompt = (
             "You are a friendly career advisor helping children create a "
@@ -80,16 +79,12 @@ def chat():
                     reply_content = data[0].get("generated_text", "")
                 else:
                     reply_content = json.dumps(data)
+                return jsonify({"reply": reply_content})
             else:
-                reply_content = json.dumps({
-                    "error": f"HuggingFace API error {r.status_code}",
-                    "question": "Could you try again?"
-                })
+                return jsonify({"error": f"HuggingFace API error {r.status_code}"}), 502
         except Exception as e:
-            reply_content = json.dumps({
-                "error": f"Error contacting HuggingFace: {e}",
-                "question": "Could you try again?"
-            })
+            return jsonify({"error": f"Error contacting HuggingFace: {e}"}), 502
+
     else:
         # Offline fallback
         reply_content = json.dumps({
@@ -97,8 +92,8 @@ def chat():
             "skills": ["camera operation", "storytelling"],
             "question": "What else do you enjoy?"
         })
+        return jsonify({"reply": reply_content})
 
-    return jsonify({"reply": reply_content})
 
 
 if __name__ == '__main__':
