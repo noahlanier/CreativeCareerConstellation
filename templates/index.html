@@ -1,17 +1,27 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>Creative Career Constellation</title>
-</head>
-<body>
-    <h1>Welcome to the Creative Career Constellation</h1>
-    <p>
-        The Creative Career Constellation helps you explore your passions by connecting
-        your favorite activities to possible careers and the skills you need to grow.
-    </p>
-    <p>
-        <a href="/constellation">Start exploring</a>
-    </p>
-</body>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  </head>
+  <body class="h-screen">
+    <div class="md:flex h-full">
+      <div class="md:w-2/5 h-1/2 md:h-full flex flex-col border-r">
+        <div id="chat-log" class="flex-1 overflow-y-auto p-4 space-y-2"></div>
+        <form id="chat-form" class="p-4 flex gap-2 border-t">
+          <input
+            id="chat-input"
+            class="flex-1 border p-2 rounded"
+            placeholder="Tell me something you like..."
+          />
+          <button class="px-4 py-2 bg-blue-500 text-white rounded">Send</button>
+        </form>
+      </div>
+      <div class="md:w-3/5 flex-1" id="graph"></div>
+    </div>
+    <script type="module" src="/static/js/chat.js"></script>
+    <script type="module" src="/static/js/graph.js"></script>
+  </body>
 </html>
